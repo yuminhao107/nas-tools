@@ -24,8 +24,8 @@ def main():
     )
     aria2 = aria2p.API(client)
     options=client.get_global_option()
-    options.max_connection_per_server=1
-    base_dir=options.dir
+    options['max_connection_per_server']=1
+    base_dir=options['dir']
     if not base_dir.endswith('/'):
         base_dir=base_dir+'/'
     # The watch manager stores the watches and provides operations on watches
@@ -39,9 +39,9 @@ def main():
                 download_url=url_pre+ralative_url
                 if '/' in ralative_url:
                     ralative_dir=event.path[len(watch_path):]
-                    options.dir=base_dir+ralative_dir
+                    options['dir']=base_dir+ralative_dir
                 else:
-                    options.dir=base_dir
+                    options['dir']=base_dir
                 uris=[download_url,]
                 print ("Download: "+download_url)
                 aria2.add_uris(uris,options=options)
