@@ -18,9 +18,10 @@ def main():
     mask = pyinotify.IN_CLOSE_WRITE 
     class EventHandler(pyinotify.ProcessEvent):
         def process_IN_CLOSE_WRITE(self, event):
-            # print ("Close: "+str(event.pathname))
-            os.system('scp -P {0} {1} {2}'.format(port,event.pathname,remote_path))
-            os.system('rm '+str(event.pathname))
+            if event.name.endswith('torrent'):
+                # print ("Close: "+str(event.pathname))
+                os.system('scp -P {0} {1} {2}'.format(port,event.pathname,remote_path))
+                os.system('rm '+str(event.pathname))
 
     handler = EventHandler()
 

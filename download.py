@@ -8,6 +8,8 @@ def main():
         print("Script needs 6 arguments")
         return
     watch_path=sys.argv[1]
+    if not watch_path.endswith('/'):
+        watch_path=watch_path+'/'
     rpc_host=sys.argv[2]
     port=int(sys.argv[3])
     secreat=sys.argv[4]
@@ -29,7 +31,7 @@ def main():
     class EventHandler(pyinotify.ProcessEvent):
         def process_IN_CLOSE_WRITE(self, event):
             if len(event.name) > 0:
-                download_url=url_pre+event.name
+                download_url=url_pre+event.pathname[len(watch_path):]
                 uris=[download_url,]
                 print ("Download: "+download_url)
                 aria2.add_uris(uris)
