@@ -30,8 +30,9 @@ def main():
         def process_IN_CLOSE_WRITE(self, event):
             if len(event.name) > 0:
                 download_url=url_pre+event.name
+                uris=[download_url,]
                 print ("Download: "+download_url)
-                # aria2.add(download_url)
+                aria2.add_uris(uris)
 
     handler = EventHandler()
 
