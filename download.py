@@ -3,6 +3,56 @@ import sys
 import os
 import aria2p
 
+exts=[
+".jpg",
+".pdf",
+".mkv",
+".webp",
+".mp3",
+".mp4",
+".epub",
+".mobi",
+".txt",
+".flac",
+".MP3",
+".chm",
+".zip",
+".log",
+".cue",
+".mka",
+".ts",
+".srt",
+".mov",
+".ass",
+".avi",
+".nfo",
+".md5",
+".rar",
+".m2ts",
+".azw3",
+".png",
+".cht",
+".chs",
+".test",
+".html",
+".wmv",
+".ps",
+".doc",
+".MP4",
+".iso",
+".exe",
+".docx",
+".djvu",
+".dat",
+".7z"
+]
+
+def is_file(name):
+    for ext in exts:
+        if name.endswith(ext):
+            return True
+    return False
+
 def main():
     if len(sys.argv) < 6:
         print("Script needs 6 arguments")
@@ -32,20 +82,22 @@ def main():
     wm = pyinotify.WatchManager()
     # watched events
     mask = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_CREATE
+    
     class EventHandler(pyinotify.ProcessEvent):
         mask=None
         wm=None
+        mask_create_dir = pyinotify.IN_CREATE | pyinotify.IN_ISDIR
 
-        def my_init(wm=None,mask=None):
+        def my_init(self,wm=None,mask=None):
             EventHandler.wm=wm
             EventHandler.mask=mask
 
         def process_IN_CREATE(self,event):
-            if len(event.name)==0:
-                EventHandler.wm.add_watch(event.path,mask,rec=False)
+            if event.mask == EventHandler.mask_create_dir:
+                EventHandler.wm.add_watch(event.pathname,EventHandler.mask,rec=False)
 
         def process_IN_CLOSE_WRITE(self, event):
-            if len(event.name) > 0:
+            if len(event.name) > 0 and is_file(event.name):
                 ralative_url=event.pathname[len(watch_path):]
                 download_url=url_pre+ralative_url
                 if '/' in ralative_url:
@@ -55,8 +107,7 @@ def main():
                     options['dir']=base_dir
                 uris=[download_url,]
                 print ("Download: "+download_url)
-                # aria2.add_uris(uris,options=options)
-
+                aria2.add_uris(uris,options=options)
     
 
     handler = EventHandler(wm=wm,mask=mask)
