@@ -31,8 +31,19 @@ def main():
     # The watch manager stores the watches and provides operations on watches
     wm = pyinotify.WatchManager()
     # watched events
-    mask = pyinotify.IN_CLOSE_WRITE 
+    mask = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_CREATE
     class EventHandler(pyinotify.ProcessEvent):
+        mask=None
+        wm=None
+
+        def my_init(wm=None,mask=None):
+            EventHandler.wm=wm
+            EventHandler.mask=mask
+
+        def process_IN_CREATE(self,event):
+            if len(event.name)==0:
+                EventHandler.wm.add_watch(event.path,mask,rec=False)
+
         def process_IN_CLOSE_WRITE(self, event):
             if len(event.name) > 0:
                 ralative_url=event.pathname[len(watch_path):]
@@ -44,9 +55,11 @@ def main():
                     options['dir']=base_dir
                 uris=[download_url,]
                 print ("Download: "+download_url)
-                aria2.add_uris(uris,options=options)
+                # aria2.add_uris(uris,options=options)
 
-    handler = EventHandler()
+    
+
+    handler = EventHandler(wm=wm,mask=mask)
 
     notifier = pyinotify.Notifier(wm, handler)
 
