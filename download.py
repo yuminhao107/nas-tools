@@ -82,6 +82,7 @@ def main():
         while True:
             try:
                 options=client.get_global_option()
+                break
             except Exception as e:
                 print("Link error: ", e)
                 time.sleep(10)
@@ -90,13 +91,13 @@ def main():
         base_dir=options['dir']
         if not base_dir.endswith('/'):
             base_dir=base_dir+'/'
-        print("Download dir: ", e)
+        print("Host target dir: ", base_dir)
 
         while True:
             download_url, ralative_dir=url_queue.get(block=True, timeout=None)
             options['dir']=base_dir+ralative_dir
             uris=[download_url,]
-            print ("Download: "+download_url)
+            print ("Downloading: "+download_url)
             try:
                 aria2.add_uris(uris,options=options)
             except Exception as e:
