@@ -1,8 +1,9 @@
 [aria2]
 host= https://your.aria2.server
 port= 443
-secreat= your_secreat
+secret= your_secret
 url_pre= http_link_pre
+connections= 1
 
 
 [inotify]

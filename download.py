@@ -61,7 +61,7 @@ def main():
     if len(sys.argv) < 2:
         print("Script needs path to config.ini")
         return
-        
+
     config_ini=sys.argv[1]
     config = ConfigParser()
     config.read(config_ini, encoding='UTF-8')
@@ -71,7 +71,7 @@ def main():
         watch_path=watch_path+'/'
     rpc_host=config['aria2']['host']
     port=int(config['aria2']['port'])
-    secreat=config['aria2']['secreat']
+    secret=config['aria2']['secret']
     url_pre=config['aria2']['url_pre']
     if not url_pre.endswith('/'):
         url_pre=url_pre+'/'
@@ -82,7 +82,7 @@ def main():
         client=aria2p.Client(
             host=rpc_host,
             port=port,
-            secret=secreat
+            secret=secret
         )
         aria2 = aria2p.API(client)
         while True:
@@ -93,7 +93,7 @@ def main():
                 print("Link error: ", e)
                 time.sleep(10)
 
-        options['max_connection_per_server']=1
+        options['max_connection_per_server']=config['aria2']['connections']
         base_dir=options['dir']
         if not base_dir.endswith('/'):
             base_dir=base_dir+'/'
