@@ -2,5 +2,5 @@
 watch_dir= /your/directory/to/watch
 
 [ssh]
-port= 443
+port= 22
 remote_dir= username@server:remote_dir

@@ -29,8 +29,7 @@ def main():
         while True:
             pathname=scp_queue.get(block=True, timeout=None)
             print ("Uploading: "+pathname)
-            # ret=os.system('scp -P {0} \"{1}\" \"{2}\"'.format(port,pathname,remote_path))
-            ret = 0
+            ret=os.system('scp -P {0} \"{1}\" \"{2}\"'.format(port,pathname,remote_path))
             if ret != 0:
                 print("Scp Error. The server may be down.")
                 scp_queue.put(pathname)
