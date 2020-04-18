@@ -5,6 +5,7 @@ import aria2p
 import queue
 import time
 import threading
+from configparser import ConfigParser
 
 exts=[
 ".jpg",
@@ -57,16 +58,21 @@ def is_file(name):
     return False
 
 def main():
-    if len(sys.argv) < 6:
-        print("Script needs 6 arguments")
+    if len(sys.argv) < 2:
+        print("Script needs path to config.ini")
         return
-    watch_path=sys.argv[1]
+        
+    config_ini=sys.argv[1]
+    config = ConfigParser()
+    config.read(config_ini, encoding='UTF-8')
+
+    watch_path=config['inotify']['watch_dir']
     if not watch_path.endswith('/'):
         watch_path=watch_path+'/'
-    rpc_host=sys.argv[2]
-    port=int(sys.argv[3])
-    secreat=sys.argv[4]
-    url_pre=sys.argv[5]
+    rpc_host=config['aria2']['host']
+    port=int(config['aria2']['port'])
+    secreat=config['aria2']['secreat']
+    url_pre=config['aria2']['url_pre']
     if not url_pre.endswith('/'):
         url_pre=url_pre+'/'
 
