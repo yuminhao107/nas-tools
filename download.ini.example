@@ -8,3 +8,7 @@ connections= 1
 
 [inotify]
 watch_dir= /your/directory/to/watch
+
+[ssh]
+port= 443
+remote_dir= username@server:remote_dir

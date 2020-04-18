@@ -59,7 +59,7 @@ def is_file(name):
 
 def main():
     if len(sys.argv) < 2:
-        print("Script needs path to config.ini")
+        print("Script input path to config.ini as argument")
         return
 
     config_ini=sys.argv[1]
