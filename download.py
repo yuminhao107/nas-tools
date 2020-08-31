@@ -48,6 +48,7 @@ exts=[
 ".docx",
 ".djvu",
 ".dat",
+".wav",
 ".7z"
 ]
 
