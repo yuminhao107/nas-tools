@@ -29,7 +29,7 @@ def main():
 
     config = ConfigParser()
     config.read(sys.argv[1], encoding='UTF-8')
-    sleep_time=config['ddns']['sleep']
+    sleep_time=int(config['ddns']['sleep'])
 
     last_ip=""
     while True:
