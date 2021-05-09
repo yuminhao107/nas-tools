@@ -5,6 +5,7 @@ import queue
 import time
 import threading
 from configparser import ConfigParser
+from os.path import isfile
 
 def main():
     if len(sys.argv) < 2:
@@ -29,6 +30,9 @@ def main():
         while True:
             pathname=scp_queue.get(block=True, timeout=None)
             print ("Uploading: "+pathname)
+            if not isfile(pathname):
+                print("Not found file: {}".format(pathname))
+                continue
             ret=os.system('scp -P {0} \"{1}\" \"{2}\"'.format(port,pathname,remote_path))
             if ret != 0:
                 print("Scp Error. The server may be down.")
