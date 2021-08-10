@@ -33,7 +33,6 @@ def main():
 
     last_ip=""
     while True:
-        sleep(sleep_time)
         try:
             ip = get_ip()
             if ip!=last_ip:
@@ -42,6 +41,7 @@ def main():
                 last_ip=ip
         except:
             print("Error. Try after {} seconds".format(sleep_time))
+        sleep(sleep_time)
 
 if __name__=="__main__":
     main()
