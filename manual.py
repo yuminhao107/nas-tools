@@ -54,6 +54,7 @@ def main():
                 dir_list.append(pathname+'/'+name)
         elif os.path.isfile(pathname):
             if not contain_word(os.path.basename(pathname), word_list): continue
+            if pathname.endswith(".!qB"): continue
             ralative_url=pathname[len(watch_path):]
             download_url=url_pre+ralative_url
             ralative_dir=""
