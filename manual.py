@@ -12,11 +12,24 @@ def make_end(string, end):
     else:
         return string
 
+def contain_word(name, word_list):
+    if len(word_list)==0: return True
+    for word in word_list:
+        if word in name: return True
+    return False
+
+
+
 def main():
     if len(sys.argv) < 3:
-        print("Script input path to config.ini as argument")
+        print("Example: python3 manual.py download.ini path_to_file")
         return
-
+    word_list = []
+    if len(sys.argv) >= 4:
+        word_list=sys.argv[3].split()
+        print("Match files with key words "+str(word_list))
+    else:
+        print("Match all files")
     config_ini=sys.argv[1]
     config = ConfigParser()
     config.read(config_ini, encoding='UTF-8')
@@ -39,7 +52,8 @@ def main():
         if os.path.isdir(pathname):  
             for name in os.listdir(pathname):
                 dir_list.append(pathname+'/'+name)
-        elif os.path.isfile(pathname):  
+        elif os.path.isfile(pathname):
+            if not contain_word(os.path.basename(pathname), word_list): continue
             ralative_url=pathname[len(watch_path):]
             download_url=url_pre+ralative_url
             ralative_dir=""
